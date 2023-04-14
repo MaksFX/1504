@@ -1,0 +1,71 @@
+    def Excel():
+
+        wb = openpyxl.Workbook()
+        sheet = wb.active
+        sheet.title = "Отчет за месяц"
+        c1 = sheet['A1']
+        c1.value = "ID "
+
+        c8 = sheet['B1']
+        c8.value = "name"
+
+        c2 = sheet['C1']
+        c2.value = "surname"
+
+        c5 = sheet['D1']
+        c5.value = "pasport"
+
+        c6 = sheet['E1']
+        c6.value = "login"
+
+        c7 = sheet['F1']
+        c7.value = "pass"
+
+        c9 = sheet['G1']
+        c9.value = "itog"
+
+
+
+        with connection.cursor() as cursor:
+            query = "SELECT * FROM `otchet`, `users` WHERE otchet.id_usera = users.id_us;"
+            cursor.execute(query)
+            reess = cursor.fetchall()
+            m = 2
+            for row in reess:
+                idus = (row ['id_us'])
+                q = (row['id_o'])
+                a = (row ['name'])
+                w = (row['surname'])
+                e = (row['passport'])
+                r = (row['login'])
+                t = (row['pass'])
+                y = (row['screen'])
+
+                cur1 = (f"SELECT * FROM otchet WHERE id_usera = '{idus}' ")
+                cursor.execute(cur1)
+                reess = cursor.fetchall()
+                quan = 0
+                for row in reess:
+                    asas = (row['id_usera'])
+                    quan = quan + 1
+
+                c99 = sheet.cell(row=m, column=1)
+                c99.value = q
+                c98 = sheet.cell(row=m, column=2)
+                c98.value = a
+                c97 = sheet.cell(row=m, column=3)
+                c97.value = w
+                c96 = sheet.cell(row=m, column=4)
+                c96.value = e
+                c95 = sheet.cell(row=m, column=5)
+                c95.value = r
+                c94 = sheet.cell(row=m, column=6)
+                c94.value = t
+                c93 = sheet.cell(row=m, column=7)
+                c93.value = y
+
+
+            nows = (datetime.date.today().strftime('%B'))
+            wb.save(f"Отчет_{nows}.xlsx")
+
+    btn_addb = Button(awindow, text='Экспорт в Excel', command=Excel).grid(row=30, column=2,ipadx=28)
